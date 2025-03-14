@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/utils/color_manager.dart';
 import '../bloc/project_bloc.dart';
 import '../bloc/project_state.dart';
 
@@ -17,15 +18,14 @@ class ProjectDashboardPage extends StatelessWidget {
     {'icon': Icons.work, 'title': 'Job Log'},
   ];
 
-   ProjectDashboardPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorManager.backgroundLight, // Light background
       body: BlocBuilder<ProjectBloc, ProjectState>(
         builder: (context, state) {
           if (state is ProjectLoading) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: ColorManager.primaryBlue));
           } else if (state is ProjectLoaded) {
             final project = state.projects.first; // Assuming first project
             return SingleChildScrollView(
@@ -40,6 +40,18 @@ class ProjectDashboardPage extends StatelessWidget {
                           height: 150,
                           width: double.infinity,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              height: 150,
+                              width: double.infinity,
+                              color: ColorManager.neutralLight,
+                              child: Icon(
+                                Icons.broken_image,
+                                color: ColorManager.neutralDark,
+                                size: 50,
+                              ),
+                            );
+                          },
                         ),
                         SizedBox(height: 10),
                         Text(
@@ -47,6 +59,7 @@ class ProjectDashboardPage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: ColorManager.textPrimary,
                           ),
                         ),
                       ],
@@ -58,8 +71,14 @@ class ProjectDashboardPage extends StatelessWidget {
                     itemCount: menuItems.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: Icon(menuItems[index]['icon']),
-                        title: Text(menuItems[index]['title']),
+                        leading: Icon(
+                          menuItems[index]['icon'],
+                          color: ColorManager.neutralDark,
+                        ),
+                        title: Text(
+                          menuItems[index]['title'],
+                          style: TextStyle(color: ColorManager.textPrimary),
+                        ),
                         onTap: () {
                           // Navigate to respective page
                         },
@@ -70,12 +89,25 @@ class ProjectDashboardPage extends StatelessWidget {
               ),
             );
           } else if (state is ProjectError) {
-            return Center(child: Text(state.message));
+            return Center(
+              child: Text(
+                state.message,
+                style: TextStyle(color: ColorManager.errorRed),
+              ),
+            );
           }
-          return Center(child: Text('Press to load projects'));
+          return Center(
+            child: Text(
+              'Press to load projects',
+              style: TextStyle(color: ColorManager.textSecondary),
+            ),
+          );
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: ColorManager.primaryBlue,
+        unselectedItemColor: ColorManager.neutralDark,
+        backgroundColor: ColorManager.backgroundWhite,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Projects'),
           BottomNavigationBarItem(icon: Icon(Icons.inbox), label: 'Inbox'),
