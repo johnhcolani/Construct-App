@@ -32,12 +32,10 @@ class _SplashScreenState extends State<SplashScreen> {
         child: AnimatedOpacity(
           opacity: _opacity,
           duration: Duration(seconds: 1),
-          child: Text(
-            'COCONSTRUCT™',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: ColorManager.successGreen,
+          child: Padding(
+            padding: const EdgeInsets.all(64.0),
+            child: Image.asset('assets/images/img_2.png',
+
             ),
           ),
         ),
