@@ -1,29 +1,29 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../../data/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth; // Alias Firebase User
+import '../models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<UserModel> login(String email, String password);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final http.Client client;
+  final firebase_auth.FirebaseAuth _firebaseAuth;
 
-  AuthRemoteDataSourceImpl(this.client);
+  AuthRemoteDataSourceImpl(this._firebaseAuth);
 
   @override
   Future<UserModel> login(String email, String password) async {
-    // Mock API call
-    final response = await client.post(
-      Uri.parse('https://api.example.com/login'),
-      body: jsonEncode({'email': email, 'password': password}),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    if (response.statusCode == 200) {
-      return UserModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to login');
+    try {
+      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final firebase_auth.User? user = userCredential.user; // Explicitly type as firebase_auth.User
+      if (user == null) {
+        throw Exception('User not found after login');
+      }
+      return UserModel.fromFirebaseUser(user); // Use the factory method
+    } catch (e) {
+      throw Exception('Failed to login: $e');
     }
   }
 }

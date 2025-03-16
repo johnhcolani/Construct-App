@@ -1,4 +1,4 @@
-package com.example.construct_app
+package com.johncolani.construct_app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,10 +1,10 @@
-import 'package:equatable/equatable.dart';
+abstract class ProjectEvent {}
 
-abstract class ProjectEvent extends Equatable {
-  const ProjectEvent();
+class LoadProjects extends ProjectEvent {}
 
-  @override
-  List<Object> get props => [];
+class CreateProject extends ProjectEvent {
+  final String name;
+  final String imageUrl;
+
+  CreateProject({required this.name, required this.imageUrl});
 }
-
-class FetchProjects extends ProjectEvent {}

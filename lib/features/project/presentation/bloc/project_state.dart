@@ -1,12 +1,6 @@
-import 'package:equatable/equatable.dart';
-import '../../domain/entities/project.dart';
+import 'package:construct_app/features/project/domain/entities/project.dart';
 
-abstract class ProjectState extends Equatable {
-  const ProjectState();
-
-  @override
-  List<Object> get props => [];
-}
+abstract class ProjectState {}
 
 class ProjectInitial extends ProjectState {}
 
@@ -15,17 +9,11 @@ class ProjectLoading extends ProjectState {}
 class ProjectLoaded extends ProjectState {
   final List<Project> projects;
 
-  const ProjectLoaded(this.projects);
-
-  @override
-  List<Object> get props => [projects];
+  ProjectLoaded(this.projects);
 }
 
 class ProjectError extends ProjectState {
   final String message;
 
-  const ProjectError(this.message);
-
-  @override
-  List<Object> get props => [message];
+  ProjectError(this.message);
 }

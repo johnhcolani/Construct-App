@@ -3,13 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/color_manager.dart';
 import '../../../../core/utils/theme_provider.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
-import '../bloc/auth_state.dart';
+import '../bloc/forgot_password_bloc.dart';
+import '../bloc/forgot_password_event.dart';
+import '../bloc/forgot_password_state.dart';
 
-class LoginPage extends StatelessWidget {
+class ForgotPasswordPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +18,20 @@ class LoginPage extends StatelessWidget {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: BlocConsumer<AuthBloc, AuthState>(
+        child: BlocConsumer<ForgotPasswordBloc, ForgotPasswordState>(
           listener: (context, state) {
-            if (state is AuthSuccess) {
-              // Navigate to dashboard after successful login
-              Navigator.pushReplacementNamed(context, '/dashboard');
-            } else if (state is AuthFailure) {
+            if (state is ForgotPasswordSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Password reset email sent! Check your inbox.',
+                    style: TextStyle(color: ColorManager.textWhite),
+                  ),
+                  backgroundColor: ColorManager.successGreen,
+                ),
+              );
+              Navigator.pop(context); // Navigate back to LoginPage
+            } else if (state is ForgotPasswordFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -77,45 +84,20 @@ class LoginPage extends StatelessWidget {
                           ),
                           style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                         ),
-                        SizedBox(height: 10),
-                        TextField(
-                          controller: passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Theme.of(context).colorScheme.surface,
-                            labelText: 'Password',
-                            labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-                            border: UnderlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.primary,
-                                width: 2,
-                              ),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-                        ),
                         SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
-                            if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-                              context.read<AuthBloc>().add(
-                                LoginSubmitted(
+                            if (emailController.text.isNotEmpty) {
+                              context.read<ForgotPasswordBloc>().add(
+                                ResetPasswordRequested(
                                   email: emailController.text,
-                                  password: passwordController.text,
                                 ),
                               );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    'Please enter email and password',
+                                    'Please enter your email',
                                     style: TextStyle(color: ColorManager.textWhite),
                                   ),
                                   backgroundColor: ColorManager.errorRed,
@@ -130,10 +112,10 @@ class LoginPage extends StatelessWidget {
                               borderRadius: BorderRadius.zero,
                             ),
                           ),
-                          child: state is AuthLoading
+                          child: state is ForgotPasswordLoading
                               ? CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary)
                               : Text(
-                            'Sign In',
+                            'Reset Password',
                             style: TextStyle(
                               fontSize: 18,
                               color: Theme.of(context).colorScheme.onPrimary,
@@ -154,7 +136,7 @@ class LoginPage extends StatelessWidget {
                           child: Image.asset(
                             'assets/images/img.png',
                             fit: BoxFit.cover,
-                            width: double.infinity,
+                            width:  double.infinity,
                           ),
                         ),
                       ),
@@ -167,10 +149,10 @@ class LoginPage extends StatelessWidget {
                           children: [
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/forgot_password');
+                                Navigator.pop(context); // Navigate back to LoginPage
                               },
                               child: Text(
-                                'I forgot my password',
+                                'Back to Login',
                                 style: TextStyle(
                                   color: ColorManager.primaryBlue,
                                   fontWeight: FontWeight.bold,

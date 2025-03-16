@@ -1,42 +1,49 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../../core/utils/color_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../project/presentation/bloc/project_bloc.dart';
+import '../../../project/presentation/bloc/project_event.dart';
+import '../bloc/splash_bloc.dart';
+import '../bloc/splash_event.dart';
+import '../bloc/splash_state.dart';
 
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  double _opacity = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    // Fade in animation
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _opacity = 1.0;
-      });
-    });
-    // Navigate after 3 seconds
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/login');
-    });
-  }
-
+class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: AnimatedOpacity(
-          opacity: _opacity,
-          duration: Duration(seconds: 1),
-          child: Padding(
-            padding: const EdgeInsets.all(64.0),
-            child: Image.asset('assets/images/img_2.png',
+    // Trigger CheckAuthStatus event when the widget is built
+    context.read<SplashBloc>().add(CheckAuthStatus());
 
-            ),
+    return Scaffold(
+      body: BlocListener<SplashBloc, SplashState>(
+        listener: (context, state) {
+          if (state is SplashAuthenticated) {
+            // If user is logged in, dispatch LoadProjects and navigate to dashboard
+            context.read<ProjectBloc>().add(LoadProjects());
+            Navigator.pushReplacementNamed(context, '/dashboard');
+          } else if (state is SplashUnauthenticated) {
+            // If user is not logged in, navigate to login page
+            Navigator.pushReplacementNamed(context, '/login');
+          }
+        },
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.construction,
+                size: 100,
+                color: Colors.blue,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'CoConstruct',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 20),
+              CircularProgressIndicator(),
+            ],
           ),
         ),
       ),
