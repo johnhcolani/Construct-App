@@ -10,6 +10,8 @@ import '../bloc/forgot_password_state.dart';
 class ForgotPasswordPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
 
+  ForgotPasswordPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +128,7 @@ class ForgotPasswordPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 400,
                   child: Stack(
                     children: [

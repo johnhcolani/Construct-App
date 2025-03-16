@@ -6,6 +6,8 @@ import '../bloc/settings_event.dart';
 import '../bloc/settings_state.dart';
 
 class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Dispatch FetchUserProfileRequested when the page loads

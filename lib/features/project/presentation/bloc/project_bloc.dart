@@ -36,7 +36,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
 
       List<Project> projects = snapshot.docs.map((doc) {
         print('Mapping project: ${doc.id}');
-        return Project.fromFirestore(doc.data() as Map<String, dynamic>, doc.id);
+        return Project.fromFirestore(doc.data(), doc.id);
       }).toList();
 
       if (projects.isEmpty) {
@@ -58,7 +58,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
         print('Fetched ${newSnapshot.docs.length} projects after adding sample');
         projects = newSnapshot.docs.map((doc) {
           print('Mapping new project: ${doc.id}');
-          return Project.fromFirestore(doc.data() as Map<String, dynamic>, doc.id);
+          return Project.fromFirestore(doc.data(), doc.id);
         }).toList();
       }
 
@@ -97,7 +97,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
           .get();
 
       List<Project> projects = snapshot.docs.map((doc) {
-        return Project.fromFirestore(doc.data() as Map<String, dynamic>, doc.id);
+        return Project.fromFirestore(doc.data(), doc.id);
       }).toList();
 
       emit(ProjectLoaded(projects));

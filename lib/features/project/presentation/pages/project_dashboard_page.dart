@@ -23,6 +23,8 @@ class ProjectDashboardPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController imageUrlController = TextEditingController();
 
+  ProjectDashboardPage({super.key});
+
   void _showCreateProjectDialog(BuildContext context) {
     showDialog(
       context: context,

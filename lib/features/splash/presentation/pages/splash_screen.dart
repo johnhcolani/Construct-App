@@ -7,6 +7,8 @@ import '../bloc/splash_event.dart';
 import '../bloc/splash_state.dart';
 
 class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Trigger CheckAuthStatus event when the widget is built

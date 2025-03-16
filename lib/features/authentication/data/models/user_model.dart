@@ -2,8 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth; // Alias Fir
 import '../../domain/entities/user.dart';
 
 class UserModel extends User {
-  UserModel({required String uid, required String email})
-      : super(uid: uid, email: email);
+  UserModel({required super.uid, required super.email});
 
   factory UserModel.fromFirebaseUser(firebase_auth.User firebaseUser) {
     return UserModel(

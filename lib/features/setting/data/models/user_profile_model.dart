@@ -1,8 +1,7 @@
 import '../../domain/entities/user_profile.dart';
 
 class UserProfileModel extends UserProfile {
-  UserProfileModel({required String name, required String email})
-      : super(name: name, email: email);
+  UserProfileModel({required super.name, required super.email});
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
