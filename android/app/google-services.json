@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "858556351786",
+    "project_id": "cocunstruct",
+    "storage_bucket": "cocunstruct.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858556351786:android:fed512f1c480db33e70a53",
+        "android_client_info": {
+          "package_name": "com.example.construct_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOeBCoIlOYFg_MhAgf6S7BZLaZ2-4rzhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
