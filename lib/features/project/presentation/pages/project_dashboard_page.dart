@@ -224,6 +224,14 @@ class ProjectDashboardPage extends StatelessWidget {
         selectedItemColor: ColorManager.primaryBlue,
         unselectedItemColor: ColorManager.neutralDark,
         backgroundColor: ColorManager.backgroundWhite,
+        currentIndex: 0,
+        onTap: (index) {
+          if (index == 1) {
+            // navigate to 1
+          } else if (index == 2) {
+            Navigator.pushReplacementNamed(context, '/settings');
+          }
+        },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Projects'),
           BottomNavigationBarItem(icon: Icon(Icons.inbox), label: 'Inbox'),
